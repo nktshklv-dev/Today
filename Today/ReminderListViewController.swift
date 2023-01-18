@@ -20,11 +20,13 @@ class ReminderListViewController: UICollectionViewController {
         collectionView.collectionViewLayout = listLayout
         
         
-        let cellRegistration = UICollectionView.CellRegistration { (cell: UICollectionViewListCell, indexPath: IndexPath, itemIdentifier: String) in
-            let reminder = Reminder.sampleData[indexPath.item]
-            var contentConfiguration = cell.defaultContentConfiguration()
-            contentConfiguration.text = reminder.title
-            cell.contentConfiguration = contentConfiguration
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { (cell,indexPath,itemIdentifier) in
+            
+            var data = Reminder.sampleData[indexPath.item].title
+            var cellConfiguration = cell.defaultContentConfiguration()
+            cellConfiguration.text = data
+            cell.contentConfiguration = cellConfiguration
+            
         }
         
         dataSource = DataSource(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: String) -> UICollectionViewCell? in

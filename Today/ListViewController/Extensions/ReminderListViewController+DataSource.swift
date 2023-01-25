@@ -69,4 +69,5 @@ extension ReminderListViewController {
         let index = reminders.indexOfReminder(with: id)
         reminders[index] = reminder
     }
+    
  }

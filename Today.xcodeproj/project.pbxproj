@@ -68,12 +68,29 @@
 			path = "Project extensions";
 			sourceTree = "<group>";
 		};
+		11555A44298109A800F0BD92 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1118E5AE297DCA390034C3CE /* ReminderDoneButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		11555A45298109BA00F0BD92 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1118E5B0297DCAEE0034C3CE /* ReminderListViewController+Actions.swift */,
+				1155B3AB29788F1F00C98E70 /* ReminderListViewController+DataSource.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		1155B3AA29788EE700C98E70 /* ListViewController */ = {
 			isa = PBXGroup;
 			children = (
 				11CC1AB129712B0D00A8F34E /* ReminderListViewController.swift */,
-				1118E5B0297DCAEE0034C3CE /* ReminderListViewController+Actions.swift */,
-				1155B3AB29788F1F00C98E70 /* ReminderListViewController+DataSource.swift */,
+				11555A44298109A800F0BD92 /* Views */,
+				11555A45298109BA00F0BD92 /* Extensions */,
 			);
 			path = ListViewController;
 			sourceTree = "<group>";
@@ -99,7 +116,6 @@
 			children = (
 				11CC1AAD29712B0D00A8F34E /* AppDelegate.swift */,
 				11CC1AAF29712B0D00A8F34E /* SceneDelegate.swift */,
-				1118E5AE297DCA390034C3CE /* ReminderDoneButton.swift */,
 				1118E5B4297EDFC70034C3CE /* DetailViewController */,
 				1155B3AA29788EE700C98E70 /* ListViewController */,
 				11CC1AC329712CAD00A8F34E /* Models */,

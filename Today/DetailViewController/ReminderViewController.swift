@@ -10,6 +10,7 @@ import UIKit
 
 class ReminderViewController: UICollectionViewController{
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, Row>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Row>
     
     var reminder: Reminder
     private var dataSource: DataSource!
@@ -34,6 +35,8 @@ class ReminderViewController: UICollectionViewController{
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             
         })
+        navigationItem.title = NSLocalizedString("Reminder", comment: "Reminder ViewController title ")
+        updateSnapshot()
         
     }
     
@@ -46,6 +49,13 @@ class ReminderViewController: UICollectionViewController{
         cell.contentConfiguration = contentConfiguration
         cell.tintColor = UIColor(named: "todayPrimaryTint")
         
+    }
+    
+    private func updateSnapshot() {
+        var snapshot = Snapshot()
+        snapshot.appendSections([0])
+        snapshot.appendItems([.viewTitle, .viewDate, .viewTime, .viewNotes], toSection: 0)
+        dataSource.apply(snapshot)
     }
     
     func text(for row: Row) -> String? {

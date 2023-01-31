@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 class ReminderViewController: UICollectionViewController{
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, Row>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Row>
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, Row>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Row>
     
     var reminder: Reminder
     private var dataSource: DataSource!
@@ -48,13 +48,12 @@ class ReminderViewController: UICollectionViewController{
         contentConfiguration.image = row.image
         cell.contentConfiguration = contentConfiguration
         cell.tintColor = UIColor(named: "todayPrimaryTint")
-        
     }
     
     private func updateSnapshot() {
         var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems([.viewTitle, .viewDate, .viewTime, .viewNotes], toSection: 0)
+        snapshot.appendSections([Section.view])
+        snapshot.appendItems([Row.viewTitle, Row.viewDate, Row.viewTime, Row.viewNotes], toSection: Section.view)
         dataSource.apply(snapshot)
     }
     
@@ -65,5 +64,13 @@ class ReminderViewController: UICollectionViewController{
         case .viewTime: return reminder.dueDate.formatted(date: .omitted, time: .shortened)
         case .viewTitle: return reminder.title
         }
+    }
+    
+    private func section(for indexPath: IndexPath) -> Section {
+        let sectionNumber = isEditing ? indexPath.section + 1 : indexPath.section
+        guard let section = Section(rawValue: sectionNumber) else {
+            fatalError("Unable to find matching section.")
+        }
+        return section 
     }
 }

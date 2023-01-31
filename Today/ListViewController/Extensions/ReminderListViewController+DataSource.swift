@@ -34,18 +34,11 @@ extension ReminderListViewController {
         
         var doneButtonConfiguration = doneButtonConfiguration(for: reminder)
         doneButtonConfiguration.tintColor = UIColor(named: "TodayListCellDoneButtonTint")
-        cell.accessories = [.customView(configuration: doneButtonConfiguration), .disclosureIndicator(displayed: .always) ]
+        cell.accessories = [.customView(configuration: doneButtonConfiguration), .disclosureIndicator(displayed: .always)]
         var backGroundConfiguration = UIBackgroundConfiguration.listGroupedCell()
         backGroundConfiguration.backgroundColor = UIColor(named: "TodayListCellBackground")
         cell.backgroundConfiguration = backGroundConfiguration
         
-    }
-    
-    func completeReminder(with id: Reminder.ID) {
-        var reminder = reminder(for: id)
-        reminder.isComplete.toggle()
-        update(reminder, with: id)
-        updateSnapshot(reloading: [id])
     }
     
     private func doneButtonConfiguration(for reminder: Reminder) -> UICellAccessory.CustomViewConfiguration{
@@ -59,6 +52,14 @@ extension ReminderListViewController {
         button.setImage(image, for: .normal)
         return UICellAccessory.CustomViewConfiguration(customView: button, placement: .leading(displayed: .always))
     }
+    
+    func completeReminder(with id: Reminder.ID) {
+        var reminder = reminder(for: id)
+        reminder.isComplete.toggle()
+        update(reminder, with: id)
+        updateSnapshot(reloading: [id])
+    }
+    
     
     func reminder(for id: Reminder.ID) -> Reminder {
         let index = reminders.indexOfReminder(with: id)

@@ -20,6 +20,7 @@ class ReminderViewController: UICollectionViewController{
         
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         listConfiguration.showsSeparators = false
+        listConfiguration.headerMode = .firstItemInSection
         let listLayout = UICollectionViewCompositionalLayout.list(using:  listConfiguration)
         super.init(collectionViewLayout: listLayout)
     }
@@ -35,25 +36,60 @@ class ReminderViewController: UICollectionViewController{
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             
         })
-        navigationItem.title = NSLocalizedString("Reminder", comment: "Reminder ViewController title ")
-        updateSnapshot()
         
+        if #available(iOS 16, *){
+            navigationItem.style = .navigator
+        }
+        navigationItem.title = NSLocalizedString("Reminder", comment: "Reminder ViewController title ")
+        navigationItem.rightBarButtonItem = editButtonItem
+        updateSnapshotForViewing()
+        
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if editing{
+            updateSnapshotForEditing()
+        }
+        else {
+            updateSnapshotForViewing()
+        }
     }
     
     func cellRegistrationHandler(cell: UICollectionViewListCell, indexPath: IndexPath, row: Row){
-        var contentConfiguration = cell.defaultContentConfiguration()
         
-        contentConfiguration.text = text(for: row)
-        contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: row.textStyle)
-        contentConfiguration.image = row.image
-        cell.contentConfiguration = contentConfiguration
+        let section = section(for: indexPath)
+        switch (section, row) {
+        case (_, .header(let title)):
+            var contentConfiguration = cell.defaultContentConfiguration()
+            contentConfiguration.text = title
+            cell.contentConfiguration = contentConfiguration
+        case (.view, _):
+            var contentConfiguration = cell.defaultContentConfiguration()
+            contentConfiguration.text = text(for: row)
+            contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: row.textStyle)
+            contentConfiguration.image = row.image
+            cell.contentConfiguration = contentConfiguration
+        default:
+            fatalError("Unexpected combination of section and row.")
+        }
+        
         cell.tintColor = UIColor(named: "todayPrimaryTint")
     }
     
-    private func updateSnapshot() {
+    private func updateSnapshotForEditing(){
+        var snapshot = Snapshot()
+        snapshot.appendSections([Section.title, Section.date, Section.notes])
+        snapshot.appendItems([.header(Section.title.name)], toSection: .title)
+        snapshot.appendItems([.header(Section.date.name)], toSection: .date)
+        snapshot.appendItems([.header(Section.notes.name)], toSection: .notes)
+        
+        dataSource.apply(snapshot)
+    }
+    private func updateSnapshotForViewing() {
         var snapshot = Snapshot()
         snapshot.appendSections([Section.view])
-        snapshot.appendItems([Row.viewTitle, Row.viewDate, Row.viewTime, Row.viewNotes], toSection: Section.view)
+        snapshot.appendItems([Row.header("") ,Row.viewTitle, Row.viewDate, Row.viewTime, Row.viewNotes], toSection: Section.view)
         dataSource.apply(snapshot)
     }
     
@@ -63,6 +99,8 @@ class ReminderViewController: UICollectionViewController{
         case .viewNotes: return reminder.notes
         case .viewTime: return reminder.dueDate.formatted(date: .omitted, time: .shortened)
         case .viewTitle: return reminder.title
+        default: return nil
+            
         }
     }
     
@@ -71,6 +109,6 @@ class ReminderViewController: UICollectionViewController{
         guard let section = Section(rawValue: sectionNumber) else {
             fatalError("Unable to find matching section.")
         }
-        return section 
+        return section
     }
 }

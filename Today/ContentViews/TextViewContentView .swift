@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-class TextViewContentView: UIView, UIContentView, UITextViewDelegate{
+class TextViewContentView: UIView, UIContentView{
     struct Configuration: UIContentConfiguration{
         var text: String? = ""
         var onChange: (String) -> Void = { _ in }
@@ -41,6 +41,14 @@ class TextViewContentView: UIView, UIContentView, UITextViewDelegate{
         textView.text = configuration.text
     }
     
+}
+extension UICollectionViewListCell{
+    func textViewConfiguration() -> TextViewContentView.Configuration{
+        return TextViewContentView.Configuration()
+    }
+}
+
+extension TextViewContentView: UITextViewDelegate{
     func textViewDidChange(_ textView: UITextView) {
         didChange(textView)
     }
@@ -48,11 +56,5 @@ class TextViewContentView: UIView, UIContentView, UITextViewDelegate{
     @objc private func didChange(_ sender: UITextView) {
         guard let configuration = configuration as? TextViewContentView.Configuration else {return}
         configuration.onChange(sender.text)
-    }
-    
-}
-extension UICollectionViewListCell{
-    func textViewConfiguration() -> TextViewContentView.Configuration{
-        return TextViewContentView.Configuration()
     }
 }

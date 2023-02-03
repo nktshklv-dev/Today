@@ -7,9 +7,10 @@
 
 import Foundation
 import UIKit
-class TextViewContentView: UIView, UIContentView{
+class TextViewContentView: UIView, UIContentView, UITextViewDelegate{
     struct Configuration: UIContentConfiguration{
         var text: String? = ""
+        var onChange: (String) -> Void = { _ in }
         func makeContentView() -> UIView & UIContentView {
             return TextViewContentView(self)
         }
@@ -25,8 +26,10 @@ class TextViewContentView: UIView, UIContentView{
         self.configuration = configuration
         super.init(frame: .zero)
         addPinnedSubview(textView, height: 200,  insets: UIEdgeInsets(top: 0,left: 16, bottom: 0, right: 16))
+        textView.delegate = self
         textView.font = UIFont.preferredFont(forTextStyle: .body)
         textView.backgroundColor = nil
+        
     }
     
     required init?(coder: NSCoder) {
@@ -36,6 +39,15 @@ class TextViewContentView: UIView, UIContentView{
     func configure(configuration: UIContentConfiguration) {
         guard let configuration = configuration as? Configuration else {return}
         textView.text = configuration.text
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        didChange(textView)
+    }
+    
+    @objc private func didChange(_ sender: UITextView) {
+        guard let configuration = configuration as? TextViewContentView.Configuration else {return}
+        configuration.onChange(sender.text)
     }
     
 }

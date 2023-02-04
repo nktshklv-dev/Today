@@ -72,7 +72,7 @@ class ReminderViewController: UICollectionViewController{
         case(.date, .editableDate(let date)):
             cell.contentConfiguration = dateConfiguration(for: cell, with: date)
         default:
-            fatalError("Unexpected combination of section and row.")
+            fatalError("Unexpected combination of section and row")
         }
         
         cell.tintColor = UIColor(named: "todayPrimaryTint")

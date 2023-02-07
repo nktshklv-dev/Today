@@ -59,6 +59,15 @@ extension ReminderListViewController {
         updateSnapshot(reloading: [id])
     }
     
+    func addReminder(_ reminder: Reminder){
+        reminders.append(reminder)
+    }
+    
+    func deleteReminder(with id: Reminder.ID){
+        let index = reminders.indexOfReminder(with: id)
+        reminders.remove(at: index)
+    }
+    
     
     func reminder(for id: Reminder.ID) -> Reminder {
         let index = reminders.indexOfReminder(with: id)
@@ -73,6 +82,19 @@ extension ReminderListViewController {
     func updateReminder(_ reminder: Reminder) {
         let index = reminders.indexOfReminder(with: reminder.id)
         reminders[index] = reminder
+    }
+    
+     func makeSwipeActions(for indexPath: IndexPath?) -> UISwipeActionsConfiguration?{
+        guard let indexPath = indexPath, let id = dataSource.itemIdentifier(for: indexPath) else {
+            return nil 
+        }
+        let deleteActionTitle = NSLocalizedString("Delete", comment: "Delete action title")
+        let deleteAction = UIContextualAction(style: .destructive, title: deleteActionTitle) { [weak self] _, _, completion in
+            self?.deleteReminder(with: id)
+            self?.updateSnapshot()
+            completion(false)
+        }
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
  }

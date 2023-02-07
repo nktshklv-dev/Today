@@ -22,7 +22,12 @@ class ReminderListViewController: UICollectionViewController {
         dataSource = DataSource(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: Reminder.ID) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
-        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didPressAddButton(_:)))
+        addButton.accessibilityLabel = NSLocalizedString("Add reminder", comment: "Add button accesibility label")
+        navigationItem.rightBarButtonItem = addButton
+        if #available(iOS 16, *){
+            navigationItem.style = .navigator
+        }
        updateSnapshot()
        collectionView.dataSource = dataSource
     }
@@ -48,6 +53,7 @@ class ReminderListViewController: UICollectionViewController {
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .grouped)
         listConfiguration.showsSeparators = false
         listConfiguration.backgroundColor = .clear
+        listConfiguration.trailingSwipeActionsConfigurationProvider = makeSwipeActions
         return UICollectionViewCompositionalLayout.list(using: listConfiguration)
     }
 }

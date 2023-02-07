@@ -63,8 +63,12 @@ class ReminderViewController: UICollectionViewController{
         }
     }
     
+    @objc func didCancelEdit(){
+        workingReminder = reminder
+        setEditing(false, animated: true)
+    }
+    
     func cellRegistrationHandler(cell: UICollectionViewListCell, indexPath: IndexPath, row: Row){
-        
         let section = section(for: indexPath)
         switch (section, row) {
         case (_, .header(let title)):
@@ -95,11 +99,6 @@ class ReminderViewController: UICollectionViewController{
         snapshot.appendItems([.header(Section.notes.name), .editableText(reminder.notes ?? "")], toSection: .notes)
         
         dataSource.apply(snapshot)
-    }
-    
-    @objc func didCancelEdit(){
-        workingReminder = reminder
-        setEditing(false, animated: true)
     }
     
     private func prepareForViewing() {

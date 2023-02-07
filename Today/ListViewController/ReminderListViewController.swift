@@ -24,8 +24,7 @@ class ReminderListViewController: UICollectionViewController {
         }
         
        updateSnapshot()
-        
-        collectionView.dataSource = dataSource
+       collectionView.dataSource = dataSource
     }
     
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {

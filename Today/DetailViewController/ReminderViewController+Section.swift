@@ -23,10 +23,6 @@ extension ReminderViewController{
             case .notes: return NSLocalizedString("Notes", comment: "Notes section name")
                 
             }
-
-    }
-    
-   
-        
+        }
     }
 }

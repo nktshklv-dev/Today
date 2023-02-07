@@ -46,8 +46,8 @@
             filePath = "Today/DetailViewController/ReminderViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "prepareForViewing()"
             landmarkType = "7">
          </BreakpointContent>

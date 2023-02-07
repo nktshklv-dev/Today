@@ -19,7 +19,6 @@ extension ReminderListViewController {
         snapshot.appendItems(reminders.map{$0.id})
         if !ids.isEmpty {
             snapshot.reloadItems(ids)
-            
         }
         dataSource.apply(snapshot)
     }

@@ -11,6 +11,15 @@ class ReminderListViewController: UICollectionViewController {
     
     var reminders: [Reminder] = Reminder.sampleData
     var dataSource: DataSource!
+    var listStyle: ReminderListStyle = .today
+    
+    var filteredReminders: [Reminder] {
+        return reminders.filter { listStyle.shouldInclude(date: $0.dueDate)}.sorted {
+            $0.dueDate < $1.dueDate
+        }
+    }
+    
+    let listStyleSegmentedControl = UISegmentedControl(items: [ReminderListStyle.today.name, ReminderListStyle.future.name, ReminderListStyle.all.name])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +34,10 @@ class ReminderListViewController: UICollectionViewController {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didPressAddButton(_:)))
         addButton.accessibilityLabel = NSLocalizedString("Add reminder", comment: "Add button accesibility label")
         navigationItem.rightBarButtonItem = addButton
+        
+        listStyleSegmentedControl.selectedSegmentIndex = listStyle.rawValue
+        navigationItem.titleView = listStyleSegmentedControl
+        
         if #available(iOS 16, *){
             navigationItem.style = .navigator
         }
@@ -33,7 +46,7 @@ class ReminderListViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        let id = reminders[indexPath.row].id
+        let id = filteredReminders[indexPath.row].id
         showDetail(for: id)
         return false
     }

@@ -9,7 +9,7 @@ import UIKit
 
 class ReminderListViewController: UICollectionViewController {
     
-    var reminders: [Reminder] = Reminder.sampleData
+    var reminders: [Reminder] = []
     var dataSource: DataSource!
     var listStyle: ReminderListStyle = .today
     
@@ -62,6 +62,8 @@ class ReminderListViewController: UICollectionViewController {
         }
        updateSnapshot()
        collectionView.dataSource = dataSource
+        
+       prepareReminderStore()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

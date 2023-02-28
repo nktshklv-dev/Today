@@ -60,10 +60,10 @@ class ReminderListViewController: UICollectionViewController {
         if #available(iOS 16, *){
             navigationItem.style = .navigator
         }
-       updateSnapshot()
-       collectionView.dataSource = dataSource
+        updateSnapshot()
+        collectionView.dataSource = dataSource
         
-       prepareReminderStore()
+        prepareReminderStore()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

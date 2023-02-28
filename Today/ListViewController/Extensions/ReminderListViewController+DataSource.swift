@@ -81,7 +81,7 @@ extension ReminderListViewController {
         } catch {
             showError(error)
         }
-       
+        
     }
     
     func deleteReminder(with id: Reminder.ID){
@@ -124,18 +124,18 @@ extension ReminderListViewController {
                 reminders = try await reminderStore.readAll()
                 NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: .EKEventStoreChanged, object: nil)
             } catch TodayError.accessDenied, TodayError.accessRestricted{
-                #if DEBUG
+#if DEBUG
                 reminders = Reminder.sampleData
-                #endif
+#endif
             } catch {
                 showError(error)
             }
             updateSnapshot()
         }
     }
-     func makeSwipeActions(for indexPath: IndexPath?) -> UISwipeActionsConfiguration?{
+    func makeSwipeActions(for indexPath: IndexPath?) -> UISwipeActionsConfiguration?{
         guard let indexPath = indexPath, let id = dataSource.itemIdentifier(for: indexPath) else {
-            return nil 
+            return nil
         }
         let deleteActionTitle = NSLocalizedString("Delete", comment: "Delete action title")
         let deleteAction = UIContextualAction(style: .destructive, title: deleteActionTitle) { [weak self] _, _, completion in
@@ -146,4 +146,4 @@ extension ReminderListViewController {
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
- }
+}

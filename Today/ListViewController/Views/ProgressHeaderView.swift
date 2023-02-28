@@ -15,7 +15,7 @@ class ProgressHeaderView: UICollectionReusableView {
         didSet{
             //bounds.height?
             heightConstraint?.constant = progress * bounds.height
-            UIView.animate(withDuration: 0.2) { [weak self] in 
+            UIView.animate(withDuration: 0.2) { [weak self] in
                 self?.layoutIfNeeded()
             }
         }

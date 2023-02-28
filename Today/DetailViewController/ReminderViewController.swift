@@ -19,9 +19,9 @@ class ReminderViewController: UICollectionViewController{
     }
     var workingReminder: Reminder
     var isAddingNewReminder = false
-    var onChange: (Reminder) -> Void 
+    var onChange: (Reminder) -> Void
     private var dataSource: DataSource!
-
+    
     init(reminder: Reminder, onChange: @escaping (Reminder) -> Void) {
         self.reminder = reminder
         self.workingReminder = reminder
@@ -66,7 +66,7 @@ class ReminderViewController: UICollectionViewController{
             else {
                 prepareForViewing()
             }
-           
+            
         }
     }
     
@@ -121,7 +121,7 @@ class ReminderViewController: UICollectionViewController{
         snapshot.appendItems([Row.header("") ,Row.viewTitle, Row.viewDate, Row.viewTime, Row.viewNotes], toSection: Section.view)
         dataSource.apply(snapshot)
     }
-
+    
     private func section(for indexPath: IndexPath) -> Section {
         let sectionNumber = isEditing ? indexPath.section + 1 : indexPath.section
         guard let section = Section(rawValue: sectionNumber) else {
